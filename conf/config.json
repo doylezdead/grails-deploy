@@ -1,0 +1,20 @@
+{
+    "server_host": "deploy.mtu.edu",
+    "server_username":"testuser",
+    "server_deploy_path":"/var",
+    "server_private_key":"conf/private_key",
+    "git_url":"http://github.com/group/project",
+    "git_user":"username",
+    "git_password":"password",
+    "git_private_key":"conf/git_key",
+    
+
+    
+
+    "_comments1":"This is the config file for grails-deploy.  server host and username are the credentials for the server you are deploying to.",
+    "_comments2":"The deploy_path is the path containing the webapps directory (but not including it)",
+    "_comments2":"The git username is your github username. password is your account password but it is reccommended to set up a ssh key pair to authenticate with instead"
+
+}
+
+
