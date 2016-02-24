@@ -1,11 +1,11 @@
 {
     "server_host": "deploy.mtu.edu",
     "server_username":"testuser",
-    "server_deploy_path":"/var",
+    "server_deploy_path":"/usr/share/tomcat_sr_design2_201503",
     "server_private_key":"conf/private_key",
-    "git_url":"http://github.com/group/project",
-    "git_user":"username",
-    "git_password":"password",
+    "git_repo":"MTU-SD2015/RoyaRiskRepo",
+    "git_user":"doylezdead",
+    "git_password":"",
     "git_private_key":"conf/git_key",
     
 
