@@ -1,10 +1,9 @@
 {
     "server_key": "", 
-    "git_key": "conf/git_key", 
+    "server_host": "cshci-dev.mtu.edu", 
     "server_deploy_path": "/usr/share/tomcat_sr_design2_201503", 
-    "server_host": "deploy.mtu.edu", 
+    "server_user": "sd2_201503", 
+    "git_key": "", 
     "git_user": "doylezdead", 
-    "server_username": "testuser", 
-    "git_password": "", 
-    "git_repo": "MTU-SD2015/RoyaRiskRepo"
+    "git_repo": "group/project"
 }
