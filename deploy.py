@@ -1,20 +1,31 @@
 #!/bin/env python
 
-import subprocess as sp
 import os
 import json
 import argparse
 import shutil
 
 prefix = os.path.dirname(os.path.realpath(__file__))
+config = json.load(open(prefix + '/conf/config.json'))
 
 def init():
-    print prefix
+    if config.get('server_key') == '':
+        os.system('ssh-keygen -b 2048 -t rsa -f conf/server_key -q -N ""')
+        config['server_key'] = 'conf/server_key'
+
+    if config.get('git_key') == '':
+        os.system('ssh-keygen -b 2048 -t rsa -f conf/git_key -q -N ""')
+        config['git_key'] = 'conf/git_key'
+
+    with open(prefix + '/conf/config.json', 'w') as f:
+        json.dump(config, f, indent=4)
+
+    print('copy your public keys to their appropriate locations.')
 
 
 def deploy():
 
-    config = json.load(open(prefix + '/conf/config.json'))
+    
     git_repo = config.get('git_repo')
     git_project = git_repo.split('/')[1]
 
@@ -34,9 +45,9 @@ def deploy():
 
     shutil.rmtree(git_project)
 
-    os.system('scp -i ' + config.get('server_private_key') + ' resources/replace.bash ' + config.get('server_username') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    os.system('scp -i ' + config.get('server_private_key') + ' ' + project_name + '.war ' + config.get('server_username') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    os.system("ssh " + config.get('server_username') + '@' + config.get('server_host') + " -i " + config.get('server_private_key') + "'cd " + config.get('server_deploy_path') + "; bash replace.bash'&&")
+    os.system('scp -i ' + config.get('server_key') + ' resources/replace.bash ' + config.get('server_username') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
+    os.system('scp -i ' + config.get('server_key') + ' ' + project_name + '.war ' + config.get('server_username') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
+    os.system("ssh " + config.get('server_username') + '@' + config.get('server_host') + " -i " + config.get('server_key') + "'cd " + config.get('server_deploy_path') + "; bash replace.bash'&&")
 
     os.remove(project_name + '.war')
 

@@ -1,20 +1,10 @@
 {
-    "server_host": "deploy.mtu.edu",
-    "server_username":"testuser",
-    "server_deploy_path":"/usr/share/tomcat_sr_design2_201503",
-    "server_private_key":"conf/private_key",
-    "git_repo":"MTU-SD2015/RoyaRiskRepo",
-    "git_user":"doylezdead",
-    "git_password":"",
-    "git_private_key":"conf/git_key",
-    
-
-    
-
-    "_comments1":"This is the config file for grails-deploy.  server host and username are the credentials for the server you are deploying to.",
-    "_comments2":"The deploy_path is the path containing the webapps directory (but not including it)",
-    "_comments2":"The git username is your github username. password is your account password but it is reccommended to set up a ssh key pair to authenticate with instead"
-
+    "server_key": "", 
+    "git_key": "conf/git_key", 
+    "server_deploy_path": "/usr/share/tomcat_sr_design2_201503", 
+    "server_host": "deploy.mtu.edu", 
+    "git_user": "doylezdead", 
+    "server_username": "testuser", 
+    "git_password": "", 
+    "git_repo": "MTU-SD2015/RoyaRiskRepo"
 }
-
-
