@@ -4,3 +4,5 @@ cd $3
 grails clean-all
 grails war
 mv target/*.war ..
+
+exit

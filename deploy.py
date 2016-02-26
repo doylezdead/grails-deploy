@@ -24,8 +24,7 @@ def init():
     print('copy your public keys to their appropriate locations. (Read the README getting started)')
 
 
-def deploy():
-
+def build():
     git_repo = config.get('git_repo')
     git_project = git_repo.split('/')[1]
 
@@ -34,28 +33,26 @@ def deploy():
         pk_path = config.get('git_key')
     else:
         pk_path = prefix + '/' + config.get('git_key')
-    # os.system('ssh-agent $(ssh-add ' + pk_path + '; git clone git@github.com:/' + git_repo + '.git)')
 
     # run build
-    # os.system('cd ' + git_project + '; grails clean-all; grails war; cp target/*.war ..')
     sp.Popen(['bash', 'resource/build.bash', pk_path, git_repo, git_project]).wait()
+
+    shutil.rmtree(git_project)
 
     namelist = os.listdir('.')
     project_name = ''
     for x in namelist:
         if '.war' in x:
-            project_name = x.split('.')[0]
-    print project_name
+            project_name = x
 
-    shutil.rmtree(git_project)
+    return project_name
 
-    # os.system('scp -i ' + config.get('server_key') + ' resources/replace.bash ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    # os.system('scp -i ' + config.get('server_key') + ' ' + project_name + '.war ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    # os.system("ssh " + config.get('server_user') + '@' + config.get('server_host') + " -i " + config.get('server_key') + "'cd " + config.get('server_deploy_path') + "; bash replace.bash'&&")
 
-    sp.Popen(['bash', 'resource/upload.bash', config.get('server_key'), config.get('server_user'), config.get('server_host'), config.get('server_deploy_path'), project_name]).wait()
+def deploy(filename, purge=False):
+    sp.Popen(['bash', 'resource/upload.bash', config.get('server_key'), config.get('server_user'), config.get('server_host'), config.get('server_deploy_path'), filename]).wait()
 
-    os.remove(project_name + '.war')
+    if purge:
+        os.remove(filename)
 
 
 parser = argparse.ArgumentParser()
@@ -65,6 +62,11 @@ args = parser.parse_args()
 if args.init == 'init':
     init()
 
+elif args.init.endswith('.war'):
+    deploy(args.init)
+
+elif args.init == 'build':
+    build()
 else:
-    deploy()
+    deploy(build(), purge=True)
 
