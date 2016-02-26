@@ -4,6 +4,7 @@ import os
 import json
 import argparse
 import shutil
+import subprocess as sp
 
 prefix = os.path.dirname(os.path.realpath(__file__))
 config = json.load(open(prefix + '/conf/config.json'))
@@ -29,14 +30,16 @@ def deploy():
     git_project = git_repo.split('/')[1]
 
     # set up absolute path (ssh-add needs an absolute path)
-    if config.get('git_private_key').startswith('/'):
-        pk_path = config.get('git_private_key')
+    if config.get('git_key').startswith('/'):
+        pk_path = config.get('git_key')
     else:
-        pk_path = prefix + '/' + config.get('git_private_key')
-    os.system('ssh-agent $(ssh-add ' + pk_path + '; git clone git@github.com:/' + git_repo + '.git)')
+        pk_path = prefix + '/' + config.get('git_key')
+    # os.system('ssh-agent $(ssh-add ' + pk_path + '; git clone git@github.com:/' + git_repo + '.git)')
 
     # run build
-    os.system('cd ' + git_project + '; grails clean-all; grails war; cp target/*.war ..')
+    # os.system('cd ' + git_project + '; grails clean-all; grails war; cp target/*.war ..')
+    sp.Popen(['bash', 'resource/build.bash', pk_path, git_repo, git_project]).wait()
+
     namelist = os.listdir('.')
     project_name = ''
     for x in namelist:
@@ -46,9 +49,11 @@ def deploy():
 
     shutil.rmtree(git_project)
 
-    os.system('scp -i ' + config.get('server_key') + ' resources/replace.bash ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    os.system('scp -i ' + config.get('server_key') + ' ' + project_name + '.war ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
-    os.system("ssh " + config.get('server_user') + '@' + config.get('server_host') + " -i " + config.get('server_key') + "'cd " + config.get('server_deploy_path') + "; bash replace.bash'&&")
+    # os.system('scp -i ' + config.get('server_key') + ' resources/replace.bash ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
+    # os.system('scp -i ' + config.get('server_key') + ' ' + project_name + '.war ' + config.get('server_user') + '@' + config.get('server_host') + ':' + config.get('server_deploy_path'))
+    # os.system("ssh " + config.get('server_user') + '@' + config.get('server_host') + " -i " + config.get('server_key') + "'cd " + config.get('server_deploy_path') + "; bash replace.bash'&&")
+
+    sp.Popen(['bash', 'resource/upload.bash', config.get('server_key'), config.get('server_user'), config.get('server_host'), config.get('server_deploy_path'), project_name]).wait()
 
     os.remove(project_name + '.war')
 
