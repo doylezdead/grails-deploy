@@ -50,7 +50,7 @@ def build():
 
 
 def deploy(filename, purge=False):
-    sp.Popen(['bash', 'resource/upload.bash', config.get('server_key'), config.get('server_user'), config.get('server_host'), config.get('server_deploy_path'), filename]).wait()
+    sp.Popen(['bash', 'resource/upload.bash', config.get('server_key'), config.get('server_user'), config.get('server_host'), config.get('server_deploy_path'), filename, filename.split('.')[0]]).wait()
 
     if purge:
         os.remove(filename)

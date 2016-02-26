@@ -2,10 +2,8 @@
 cd $1/webapps
 rm $2
 
-fullfile=$2
-dirname=${fullfile%.war}
 
-while [ `ls | grep -i dirname | wc -l` -gt 0 ]; do
+while [ `ls | grep $3 | wc -l` -gt 0 ]; do
     sleep .5;
 done
 
