@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 import os
 import json
@@ -8,6 +8,7 @@ import subprocess as sp
 
 prefix = os.path.dirname(os.path.realpath(__file__))
 config = json.load(open(prefix + '/conf/config.json'))
+
 
 def init():
     if config.get('server_key') == '':
@@ -67,6 +68,6 @@ elif args.init.endswith('.war'):
 
 elif args.init == 'build':
     build()
+
 else:
     deploy(build(), purge=True)
-
