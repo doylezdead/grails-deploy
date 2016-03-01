@@ -32,7 +32,7 @@ Run "./deploy.py build" pulls the project github and builds
 - Useful if you need to deploy an old build or grails is not installed on the machine
 - Requires "server_key" to be set and valid in the config
 
- ###### CONFIG FORMAT
+ ##### CONFIG FORMAT
 "conf/config.json"
 - This file must stay in this location (other things get created here)
 - For security purposes, the only authentication method is RSA keys. plaintext passwords not supported.
